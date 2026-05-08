@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>មេរៀនលីមីត - ថ្នាក់ទី១២</title>
+    
+    <!-- Google Fonts for Khmer -->
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;700&family=Moul&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS for Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX for Math Formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .khmer-moul {
+            font-family: 'Moul', cursive;
+        }
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 5px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="text-gray-800 leading-relaxed">
+
+    <!-- Header -->
+    <header class="bg-blue-800 text-white py-10 text-center shadow-lg">
+        <h1 class="khmer-moul text-3xl md:text-5xl mb-4">មេរៀន៖ លីមីតនៃអនុគមន៍</h1>
+        <p class="text-xl">សម្រាប់សិស្សថ្នាក់ទី ១២ (កម្រិតមូលដ្ឋាន និងកម្រិតខ្ពស់)</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md mb-8">
+        <div class="container mx-auto px-4 py-3 flex flex-wrap justify-center gap-4">
+            <a href="#intro" class="text-blue-700 hover:font-bold">១. លក្ខណៈគ្រឹះ</a>
+            <a href="#form0" class="text-blue-700 hover:font-bold">២. រាងមិនកំណត់ 0/0</a>
+            <a href="#inf" class="text-blue-700 hover:font-bold">៣. រាងអនន្ត</a>
+            <a href="#trig" class="text-blue-700 hover:font-bold">៤. លីមីតត្រីកោណមាត្រ</a>
+            <a href="#exp" class="text-blue-700 hover:font-bold">៥. លីមីត e និង ln</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 max-w-4xl">
+
+        <!-- Section 1: Introduction -->
+        <section id="intro" class="content-card">
+            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">១. លក្ខណៈគ្រឹះនៃលីមីត</h2>
+            <p class="mb-4">ប្រសិនបើ $\lim_{x \to a} f(x) = L$ និង $\lim_{x \to a} g(x) = M$ នោះយើងបាន៖</p>
+            <div class="formula-box">
+                <ul>
+                    <li>$\lim_{x \to a} [f(x) \pm g(x)] = L \pm M$</li>
+                    <li>$\lim_{x \to a} [f(x) \cdot g(x)] = L \cdot M$</li>
+                    <li>$\lim_{x \to a} \frac{f(x)}{g(x)} = \frac{L}{M}$ (បើ $M \neq 0$)</li>
+                    <li>$\lim_{x \to a} \sqrt[n]{f(x)} = \sqrt[n]{L}$ (បើ $L > 0$ សម្រាប់ $n$ គូ)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 2: Form 0/0 -->
+        <section id="form0" class="content-card">
+            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">២. រាងមិនកំណត់ $\frac{0}{0}$</h2>
+            <p class="mb-2 font-bold text-red-600">វិធីសាស្ត្រដោះស្រាយ៖</p>
+            <ul class="list-disc ml-6 mb-4">
+                <li><strong>ដាក់ជាផលគុណកត្តា៖</strong> ប្រើសម្រាប់អនុគមន៍ពហុធា រួចសម្រួលកត្តាដែលធ្វើឱ្យវាស្មើ 0 ។</li>
+                <li><strong>គុណនឹងកន្សោមឆ្លាស់៖</strong> ប្រើសម្រាប់អនុគមន៍ដែលមានរ៉ាឌីកាល់ (ឫស)។</li>
+            </ul>
+            <div class="bg-yellow-50 p-4 border border-yellow-200 rounded">
+                <p class="font-bold">ឧទាហរណ៍៖</p>
+                $$\lim_{x \to 2} \frac{x^2 - 4}{x - 2} = \lim_{x \to 2} \frac{(x-2)(x+2)}{x-2} = \lim_{x \to 2} (x+2) = 4$$
+            </div>
+        </section>
+
+        <!-- Section 3: Infinity -->
+        <section id="inf" class="content-card">
+            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">៣. លីមីតត្រង់អនន្ត $\frac{\infty}{\infty}$ និង $\infty - \infty$</h2>
+            <p class="mb-2">សម្រាប់រាង $\frac{\infty}{\infty}$ នៃអនុគមន៍សនិទាន៖</p>
+            <div class="formula-box text-center">
+                <p>ទាញដឺក្រេខ្ពស់បំផុតជាកត្តាទាំងភាគយក និងភាគបែង</p>
+                $$\lim_{x \to \infty} \frac{ax^n + ...}{bx^m + ...} = \begin{cases} \infty & \text{បើ } n > m \\ \frac{a}{b} & \text{បើ } n = m \\ 0 & \text{បើ } n < m \end{cases}$$
+            </div>
+        </section>
+
+        <!-- Section 4: Trig Limits -->
+        <section id="trig" class="content-card">
+            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">៤. លីមីតអនុគមន៍ត្រីកោណមាត្រ</h2>
+            <p class="mb-4">រូបមន្តសំខាន់ៗដែលត្រូវចងចាំ៖</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="formula-box text-center">
+                    $$\lim_{x \to 0} \frac{\sin x}{x} = 1$$
+                </div>
+                <div class="formula-box text-center">
+                    $$\lim_{x \to 0} \frac{1 - \cos x}{x} = 0$$
+                </div>
+                <div class="formula-box text-center">
+                    $$\lim_{x \to 0} \frac{\tan x}{x} = 1$$
+                </div>
+                <div class="formula-box text-center">
+                    $$\lim_{x \to 0} \frac{1 - \cos x}{x^2} = \frac{1}{2}$$
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Exp and Log -->
+        <section id="exp" class="content-card">
+            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">៥. លីមីតអិចស្ប៉ូណង់ស្យែល និងឡូការីត</h2>
+            <div class="formula-box">
+                <ul class="space-y-4">
+                    <li>$\lim_{x \to \infty} \left(1 + \frac{1}{x}\right)^x = e$</li>
+                    <li>$\lim_{x \to 0} \frac{e^x - 1}{x} = 1$</li>
+                    <li>$\lim_{x \to 0} \frac{\ln(1+x)}{x} = 1$</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Exercise Section -->
+        <section class="content-card bg-blue-50">
+            <h2 class="khmer-moul text-2xl text-blue-800 mb-4">លំហាត់អនុវត្ត (Exercises)</h2>
+            <p class="mb-4 italic text-gray-600">ចូរគណនាលីមីតខាងក្រោម៖</p>
+            <ol class="list-decimal ml-6 space-y-4 font-bold">
+                <li>$\lim_{x \to 3} \frac{x^2 - 9}{x - 3}$</li>
+                <li>$\lim_{x \to 0} \frac{\sin 5x}{x}$</li>
+                <li>$\lim_{x \to \infty} \frac{2x^2 - 3x + 1}{5x^2 + 4}$</li>
+                <li>$\lim_{x \to 0} (1 + x)^{\frac{1}{x}}$</li>
+            </ol>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 text-center mt-10">
+        <p>© ២០២៤ - សៀវភៅជំនួយស្មារតីគណិតវិទ្យា</p>
+        <p class="text-sm mt-2 text-gray-400">រៀបចំដោយ៖ AI Assistant សម្រាប់សិស្សកម្ពុជា</p>
+    </footer>
+
+    <script>
+        // Initialize KaTeX auto-render
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ]
+            });
+        });
+    </script>
+</body>
+</html>
