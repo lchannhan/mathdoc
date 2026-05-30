@@ -1,170 +1,1142 @@
 <!DOCTYPE html>
-<html lang="km">
+<html lang="km" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>មេរៀនលីមីត - ថ្នាក់ទី១២</title>
-    
-    <!-- Google Fonts for Khmer -->
-    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;700&family=Moul&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS for Styling -->
+    <title>វិញ្ញាសា និងដំណោះស្រាយគណិតវិទ្យាបាក់ឌុប (២០០២ - ២០២៥)</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // កំណត់ទម្រង់ Tailwind configuration សម្រាប់ Dark Mode ផ្អែកលើ class
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <!-- Google Fonts - Kantumruy Pro & Siemreap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Siemreap&display=swap" rel="stylesheet">
     
-    <!-- KaTeX for Math Formulas -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <!-- នាំចូល Latin Modern Roman Font សម្រាប់អក្សរឡាតាំង និងលេខក្នុងរូបមន្តឱ្យដូច LaTeX 100% -->
+    <link href="https://fonts.cdnfonts.com/css/latin-modern-roman" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- បន្ថែមបណ្ណាល័យ html2pdf.js ដើម្បីអាចបង្កើត និងទាញយក PDF ពិតប្រាកដបាន -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- បន្ថែមបណ្ណាល័យ MathJax សម្រាប់បង្ហាញរូបមន្តគណិតវិទ្យាឱ្យបានស្អាត និងត្រឹមត្រូវតាមស្ទីល LaTeX -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                macros: {
+                    R: "{\\mathbb{R}}",
+                    N: "{\\mathbb{N}}"
+                }
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            chtml: {
+                // កំណត់ Scale ឱ្យនៅសល់ 1.05 ឱ្យស្មើនឹងទំហំអក្សរខ្មែរល្មមស្អាត
+                scale: 1.05,
+                fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady();
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
         body {
-            font-family: 'Kantumruy Pro', sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Kantumruy Pro', 'Siemreap', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .khmer-moul {
-            font-family: 'Moul', cursive;
+        /* កំណត់ទម្រង់ Font Latin Modern សម្រាប់រូបមន្តគណិតវិទ្យាទាំងអស់ */
+        .tex2jax_process, mjx-container, .math-latex {
+            font-family: 'Latin Modern Roman', 'Kantumruy Pro', serif !important;
         }
-        .content-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
+        
+        /* បន្ថែម CSS បញ្ជៀសកុំឱ្យរូបមន្ត LaTeX ចេញអក្សរទ្រេត (No Italic) និងអក្សរដិត (No Bold) */
+        mjx-mi, mjx-mo, mjx-mn, mjx-texatom {
+            font-style: normal !important;
+            font-weight: normal !important;
         }
-        .formula-box {
-            background-color: #f8fafc;
-            border-left: 5px solid #3b82f6;
-            padding: 1rem;
-            margin: 1rem 0;
-            overflow-x: auto;
+
+        /* ស្ទីលប៊ូតុងបែប 3D Pop តម្រូវតាមរូបភាពគំរូ */
+        .btn-3d {
+            position: relative;
+            transition: all 0.1s ease;
+            border-bottom-width: 6px;
+            border-right-width: 4px;
         }
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 50;
+        .btn-3d:hover {
+            transform: translateY(-2px) translateX(-1px);
+            filter: brightness(1.05);
+        }
+        .btn-3d:active {
+            transform: translateY(4px) translateX(2px);
+            border-bottom-width: 2px;
+            border-right-width: 1px;
+            margin-top: 4px;
+            margin-bottom: -4px;
+        }
+
+        /* កូដ CSS សម្រាប់បង្កើតចលនាភ្លើងរត់ជុំវិញប៊ូតុង (Glow Running Light) */
+        @keyframes rainbow-glow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .glowing-light-border {
+            position: relative;
+            background: linear-gradient(90deg, #ff4500, #ff8c00, #ffd700, #32cd32, #1e90ff, #9370db, #ff4500);
+            background-size: 400% 400%;
+            animation: rainbow-glow 3s linear infinite;
+            padding: 3px; /* កម្រាស់ខ្សែភ្លើងរត់ */
         }
     </style>
 </head>
-<body class="text-gray-800 leading-relaxed">
+<body class="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
 
-    <!-- Header -->
-    <header class="bg-blue-800 text-white py-10 text-center shadow-lg">
-        <h1 class="khmer-moul text-3xl md:text-5xl mb-4">មេរៀន៖ លីមីតនៃអនុគមន៍</h1>
-        <p class="text-xl">សម្រាប់សិស្សថ្នាក់ទី ១២ (កម្រិតមូលដ្ឋាន និងកម្រិតខ្ពស់)</p>
+    <!-- Header Section (Sticky Pin Header) -->
+    <header class="sticky top-0 z-50 bg-gradient-to-r from-blue-700/95 via-indigo-600/95 to-cyan-505/95 dark:from-slate-850/95 dark:via-slate-800/95 dark:to-slate-900/95 backdrop-blur-md text-white shadow-lg border-b-4 border-blue-800 dark:border-slate-950 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div class="bg-white dark:bg-slate-800 text-indigo-600 dark:text-cyan-400 p-3 rounded-2xl shadow-inner hidden sm:block border-2 border-indigo-200 dark:border-slate-700">
+                    <i class="fa-solid fa-calculator text-3xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide flex items-center gap-2">
+                        <span>គណិតវិទ្យា បាក់ឌុប</span>
+                    </h1>
+                    <p class="text-xs opacity-90 mt-1">ប្រភពប្រមូលផ្តុំវិញ្ញាសា និងដំណោះស្រាយថ្នាក់វិទ្យាសាស្ត្រ និងវិទ្យាសាស្ត្រសង្គម (២០០២ - ២០២៥)</p>
+                </div>
+            </div>
+            
+            <!-- Statistics, Theme Toggle and Contact Developer Button -->
+            <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto justify-end">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" class="bg-white/10 dark:bg-slate-800/80 hover:bg-white/20 p-3 rounded-2xl border border-white/20 dark:border-slate-700 flex items-center justify-center transition-all duration-350 shadow-sm" title="ប្តូរពណ៌ផ្ទៃក្រោយ ភ្លឺ/ងងឹត">
+                    <i id="themeIcon" class="fa-solid fa-moon text-xl text-yellow-300 dark:text-yellow-400"></i>
+                </button>
+
+                <div class="flex gap-3 text-center">
+                    <div class="bg-white/15 dark:bg-slate-800/40 px-3 py-1.5 rounded-xl backdrop-blur-sm border border-white/10 dark:border-slate-700">
+                        <span class="block text-lg font-bold" id="totalYearsBadge">២៥</span>
+                        <span class="text-[10px] opacity-80">សរុបឆ្នាំ</span>
+                    </div>
+                    <div class="bg-white/15 dark:bg-slate-800/40 px-3 py-1.5 rounded-xl backdrop-blur-sm border border-white/10 dark:border-slate-700">
+                        <span class="block text-lg font-bold">៥០</span>
+                        <span class="text-[10px] opacity-80">វិញ្ញាសា</span>
+                    </div>
+                </div>
+                
+                <!-- Creator Contact Button on Header (ជាមួយខ្សែភ្លើងរត់ព័ទ្ធជុំវិញ) -->
+                <div class="glowing-light-border rounded-2xl w-full sm:w-auto overflow-hidden shadow-lg transition-transform duration-200 hover:scale-105 active:scale-95">
+                    <a href="https://laychannhan.blogspot.com/" target="_blank" class="bg-slate-900 hover:bg-slate-850 text-white px-5 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 w-full transition-colors">
+                        <i class="fa-solid fa-circle-user text-lg text-amber-400"></i>
+                        <span>ទំនាក់ទំនងអ្នកបង្កើត</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md mb-8">
-        <div class="container mx-auto px-4 py-3 flex flex-wrap justify-center gap-4">
-            <a href="#intro" class="text-blue-700 hover:font-bold">១. លក្ខណៈគ្រឹះ</a>
-            <a href="#form0" class="text-blue-700 hover:font-bold">២. រាងមិនកំណត់ 0/0</a>
-            <a href="#inf" class="text-blue-700 hover:font-bold">៣. រាងអនន្ត</a>
-            <a href="#trig" class="text-blue-700 hover:font-bold">៤. លីមីតត្រីកោណមាត្រ</a>
-            <a href="#exp" class="text-blue-700 hover:font-bold">៥. លីមីត e និង ln</a>
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+        
+        <!-- Welcome banner and Search -->
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 shadow-sm mb-8 border-2 border-indigo-100 dark:border-slate-750 flex flex-col md:flex-row items-center justify-between gap-6 transition-colors duration-300">
+            <div class="space-y-2 max-w-xl text-center md:text-left">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-slate-100 flex items-center justify-center md:justify-start gap-2">
+                    <i class="fa-solid fa-search-plus text-indigo-500 dark:text-cyan-400"></i>
+                    ស្វែងរកវិញ្ញាសាគណិតវិទ្យា
+                </h2>
+                <p class="text-gray-500 dark:text-slate-400">សូមជ្រើសរើសឆ្នាំសិក្សាណាមួយខាងក្រោម ដើម្បីមើលវិញ្ញាសា និងដំណោះស្រាយគណិតវិទ្យាលម្អិត Bim。</p>
+            </div>
+            <!-- Quick Search Input -->
+            <div class="w-full md:w-80 relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-450">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 dark:text-slate-500"></i>
+                </span>
+                <input type="number" id="yearSearchInput" placeholder="ស្វែងរកឆ្នាំ... (ឧ. ២០២៤)" 
+                       class="w-full pl-10 pr-4 py-3.5 rounded-2xl border-2 border-indigo-100 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-400 transition-all text-gray-750 dark:text-slate-150"
+                       min="2002" max="2025" oninput="filterYears()">
+            </div>
         </div>
-    </nav>
 
-    <main class="container mx-auto px-4 max-w-4xl">
-
-        <!-- Section 1: Introduction -->
-        <section id="intro" class="content-card">
-            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">១. លក្ខណៈគ្រឹះនៃលីមីត</h2>
-            <p class="mb-4">ប្រសិនបើ $\lim_{x \to a} f(x) = L$ និង $\lim_{x \to a} g(x) = M$ នោះយើងបាន៖</p>
-            <div class="formula-box">
-                <ul>
-                    <li>$\lim_{x \to a} [f(x) \pm g(x)] = L \pm M$</li>
-                    <li>$\lim_{x \to a} [f(x) \cdot g(x)] = L \cdot M$</li>
-                    <li>$\lim_{x \to a} \frac{f(x)}{g(x)} = \frac{L}{M}$ (បើ $M \neq 0$)</li>
-                    <li>$\lim_{x \to a} \sqrt[n]{f(x)} = \sqrt[n]{L}$ (បើ $L > 0$ សម្រាប់ $n$ គូ)</li>
-                </ul>
+        <!-- Section: Year Grid (Home screen) -->
+        <div id="yearsGridSection" class="space-y-6">
+            <div class="flex items-center justify-between border-b-2 border-gray-200 dark:border-slate-750 pb-4">
+                <h3 class="text-lg font-bold text-gray-700 dark:text-slate-300 flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days text-indigo-500 dark:text-cyan-400"></i>
+                    ជ្រើសរើសឆ្នាំប្រឡង (២០០២ - ២០២៥)
+                </h3>
+                <span class="text-sm font-semibold text-indigo-600 dark:text-cyan-400 bg-indigo-50 dark:bg-slate-800 px-3 py-1 rounded-xl border border-indigo-100 dark:border-slate-700" id="resultsCount">បង្ហាញទាំងអស់ ២៥ ឆ្នាំ</span>
             </div>
-        </section>
 
-        <!-- Section 2: Form 0/0 -->
-        <section id="form0" class="content-card">
-            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">២. រាងមិនកំណត់ $\frac{0}{0}$</h2>
-            <p class="mb-2 font-bold text-red-600">វិធីសាស្ត្រដោះស្រាយ៖</p>
-            <ul class="list-disc ml-6 mb-4">
-                <li><strong>ដាក់ជាផលគុណកត្តា៖</strong> ប្រើសម្រាប់អនុគមន៍ពហុធា រួចសម្រួលកត្តាដែលធ្វើឱ្យវាស្មើ 0 ។</li>
-                <li><strong>គុណនឹងកន្សោមឆ្លាស់៖</strong> ប្រើសម្រាប់អនុគមន៍ដែលមានរ៉ាឌីកាល់ (ឫស)។</li>
-            </ul>
-            <div class="bg-yellow-50 p-4 border border-yellow-200 rounded">
-                <p class="font-bold">ឧទាហរណ៍៖</p>
-                $$\lim_{x \to 2} \frac{x^2 - 4}{x - 2} = \lim_{x \to 2} \frac{(x-2)(x+2)}{x-2} = \lim_{x \to 2} (x+2) = 4$$
+            <!-- Grid container for highly styled colorful 3D buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 pb-10" id="buttonsContainer">
+                <!-- Buttons will be dynamically generated by Javascript with custom colors & borders -->
             </div>
-        </section>
+        </div>
 
-        <!-- Section 3: Infinity -->
-        <section id="inf" class="content-card">
-            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">៣. លីមីតត្រង់អនន្ត $\frac{\infty}{\infty}$ និង $\infty - \infty$</h2>
-            <p class="mb-2">សម្រាប់រាង $\frac{\infty}{\infty}$ នៃអនុគមន៍សនិទាន៖</p>
-            <div class="formula-box text-center">
-                <p>ទាញដឺក្រេខ្ពស់បំផុតជាកត្តាទាំងភាគយក និងភាគបែង</p>
-                $$\lim_{x \to \infty} \frac{ax^n + ...}{bx^m + ...} = \begin{cases} \infty & \text{បើ } n > m \\ \frac{a}{b} & \text{បើ } n = m \\ 0 & \text{បើ } n < m \end{cases}$$
-            </div>
-        </section>
-
-        <!-- Section 4: Trig Limits -->
-        <section id="trig" class="content-card">
-            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">៤. លីមីតអនុគមន៍ត្រីកោណមាត្រ</h2>
-            <p class="mb-4">រូបមន្តសំខាន់ៗដែលត្រូវចងចាំ៖</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="formula-box text-center">
-                    $$\lim_{x \to 0} \frac{\sin x}{x} = 1$$
-                </div>
-                <div class="formula-box text-center">
-                    $$\lim_{x \to 0} \frac{1 - \cos x}{x} = 0$$
-                </div>
-                <div class="formula-box text-center">
-                    $$\lim_{x \to 0} \frac{\tan x}{x} = 1$$
-                </div>
-                <div class="formula-box text-center">
-                    $$\lim_{x \to 0} \frac{1 - \cos x}{x^2} = \frac{1}{2}$$
+        <!-- Section: Subject & Content List (Shown on year click) -->
+        <div id="subjectSection" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-gray-200 dark:border-slate-750 pb-4">
+                <button onclick="showYearsGrid()" class="flex items-center gap-2 text-indigo-600 dark:text-cyan-400 hover:text-indigo-800 dark:hover:text-cyan-300 font-bold transition-colors">
+                    <i class="fa-solid fa-circle-arrow-left text-xl"></i> ត្រឡប់ទៅឆ្នាំទាំងអស់វិញ
+                </button>
+                <div class="flex items-center gap-3">
+                    <span id="selectedYearBadge" class="text-xl font-bold px-5 py-2.5 rounded-2xl text-white shadow-md btn-3d">
+                        ឆ្នាំ ២០២៣
+                    </span>
                 </div>
             </div>
-        </section>
 
-        <!-- Section 5: Exp and Log -->
-        <section id="exp" class="content-card">
-            <h2 class="khmer-moul text-2xl text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">៥. លីមីតអិចស្ប៉ូណង់ស្យែល និងឡូការីត</h2>
-            <div class="formula-box">
-                <ul class="space-y-4">
-                    <li>$\lim_{x \to \infty} \left(1 + \frac{1}{x}\right)^x = e$</li>
-                    <li>$\lim_{x \to 0} \frac{e^x - 1}{x} = 1$</li>
-                    <li>$\lim_{x \to 0} \frac{\ln(1+x)}{x} = 1$</li>
-                </ul>
+            <!-- Subject Cards Container - ONLY MATHEMATICS (Science vs Social Science) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Card 1: Science Option -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-indigo-150 dark:border-slate-700 shadow-md overflow-hidden hover:shadow-lg transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="bg-gradient-to-r from-red-500 to-rose-600 p-5 text-white flex justify-between items-center border-b-4 border-red-700">
+                            <span class="font-bold text-xl flex items-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> គណិតវិទ្យា (ថ្នាក់វិទ្យាសាស្ត្រ)
+                            </span>
+                            <span class="text-xs bg-white/20 font-bold px-3 py-1 rounded-full uppercase tracking-wider">ថ្នាក់វិទ្យាសាស្ត្រ</span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <p class="text-gray-650 dark:text-slate-355 text-sm leading-relaxed">វិញ្ញាសាគណិតវិទ្យាផ្លូវការសម្រាប់ថ្នាក់វិទ្យាសាស្ត្រ (ថ្នាក់ពូកែគណិត និងរូប) ដែលមានកម្រិតលំហាត់ខ្ពស់ និងលម្អិត។</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="openModal('គណិតវិទ្យា (ថ្នាក់វិទ្យាសាស្ត្រ)', 'វិញ្ញាសា')" class="flex-1 py-3 px-4 bg-red-50 dark:bg-slate-900 dark:hover:bg-red-950/20 hover:bg-red-100 text-red-700 dark:text-red-400 font-bold rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 border border-red-200 dark:border-slate-700">
+                                <i class="fa-regular fa-file-pdf text-base"></i> មើលវិញ្ញាសា
+                            </button>
+                            <button onclick="openModal('គណិតវិទ្យា (ថ្នាក់វិទ្យាសាស្ត្រ)', 'ដំណោះស្រាយ')" class="flex-1 py-3 px-4 bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 text-white font-bold rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 shadow-sm btn-3d border-red-800">
+                                <i class="fa-solid fa-square-root-variable text-base"></i> មើលដំណោះស្រាយ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Social Science Option -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-indigo-150 dark:border-slate-700 shadow-md overflow-hidden hover:shadow-lg transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="bg-gradient-to-r from-teal-500 to-emerald-600 p-5 text-white flex justify-between items-center border-b-4 border-teal-700">
+                            <span class="font-bold text-xl flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line"></i> គណិតវិទ្យា (ថ្នាក់សង្គម)
+                            </span>
+                            <span class="text-xs bg-white/20 font-bold px-3 py-1 rounded-full uppercase tracking-wider">ថ្នាក់វិទ្យាសាស្ត្រសង្គម</span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="bg-teal-50 dark:bg-slate-900 text-teal-800 dark:text-teal-400 p-3 rounded-xl text-xs font-semibold border border-teal-100 dark:border-slate-700">
+                                <i class="fa-solid fa-circle-info"></i> លក្ខណៈពិសេស៖ ផ្តោតលើ ស្វ៊ីតចំនួន, ប្រូបាប៊ីលេពិត, ស្ថិតិ, និងការវិភាគអនុគមន៍កម្រិតមធ្យម។
+                            </div>
+                            <p class="text-gray-650 dark:text-slate-355 text-sm leading-relaxed">វិញ្ញាសាគណិតវិទ្យាផ្លូវការសម្រាប់ថ្នាក់វិទ្យាសាស្ត្រសង្គម ដែលសម្រួលកម្រិតលំបាកលំហាត់ឱ្យសមស្របនឹងកម្មវិធីសិក្សាថ្នាក់សង្គម។</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="openModal('គណិតវិទ្យា (ថ្នាក់សង្គម)', 'វិញ្ញាសា')" class="flex-1 py-3 px-4 bg-teal-50 dark:bg-slate-900 dark:hover:bg-teal-950/20 hover:bg-teal-100 text-teal-700 dark:text-teal-400 font-bold rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 border border-teal-200 dark:border-slate-700">
+                                <i class="fa-regular fa-file-pdf text-base"></i> មើលវិញ្ញាសា
+                            </button>
+                            <button onclick="openModal('គណិតវិទ្យា (ថ្នាក់សង្គម)', 'ដំណោះស្រាយ')" class="flex-1 py-3 px-4 bg-teal-600 hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600 text-white font-bold rounded-2xl text-sm transition-colors flex items-center justify-center gap-2 shadow-sm btn-3d border-teal-800">
+                                <i class="fa-solid fa-square-root-variable text-base"></i> មើលដំណោះស្រាយ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </section>
-
-        <!-- Exercise Section -->
-        <section class="content-card bg-blue-50">
-            <h2 class="khmer-moul text-2xl text-blue-800 mb-4">លំហាត់អនុវត្ត (Exercises)</h2>
-            <p class="mb-4 italic text-gray-600">ចូរគណនាលីមីតខាងក្រោម៖</p>
-            <ol class="list-decimal ml-6 space-y-4 font-bold">
-                <li>$\lim_{x \to 3} \frac{x^2 - 9}{x - 3}$</li>
-                <li>$\lim_{x \to 0} \frac{\sin 5x}{x}$</li>
-                <li>$\lim_{x \to \infty} \frac{2x^2 - 3x + 1}{5x^2 + 4}$</li>
-                <li>$\lim_{x \to 0} (1 + x)^{\frac{1}{x}}$</li>
-            </ol>
-        </section>
+        </div>
 
     </main>
 
-    <footer class="bg-gray-800 text-white py-6 text-center mt-10">
-        <p>© ២០២៦ - សៀវភៅជំនួយស្មារតីគណិតវិទ្យា</p>
-        <p class="text-sm mt-2 text-gray-400">រៀបចំដោយ៖ AI Assistant សម្រាប់សិស្សកម្ពុជា</p>
+    <!-- Modal for viewing Document (With PDF printing feature) -->
+    <div id="docModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border dark:border-slate-700">
+            <!-- Modal Header -->
+            <div id="modalHeaderColor" class="p-6 text-white flex items-center justify-between">
+                <div>
+                    <h3 id="modalTitle" class="text-xl font-bold">វិញ្ញាសាគណិតវិទ្យា ឆ្នាំ ២០២៣</h3>
+                    <p id="modalSubtitle" class="text-xs opacity-90 mt-1">ប្រព័ន្ធបង្ហាញឯកសារគំរូសម្រាប់សិក្សា</p>
+                </div>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Document Viewer Area) -->
+            <div class="p-6 overflow-y-auto flex-grow space-y-6">
+                <!-- Info Alert -->
+                <div class="bg-blue-50 dark:bg-slate-900 border border-blue-200 dark:border-slate-700 text-blue-800 dark:text-cyan-400 rounded-2xl p-4 flex gap-3 text-sm">
+                    <i class="fa-solid fa-circle-info text-lg mt-0.5"></i>
+                    <div>
+                        <strong>ព័ត៌មាន៖</strong> នេះគឺជាឯកសារវិញ្ញាសាត្រូវបានចម្លងឡើងវិញ/ដំណោះស្រាយគណិតវិទ្យាក្រៅផ្លូវការ។ អ្នកអាចទាញយកជាឯកសារ PDF ឬមើលផ្ទាល់នៅលើកម្មវិធី។
+                    </div>
+                </div>
+
+                <!-- Main Sheet Design (this element is captured by html2pdf) -->
+                <div class="border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl p-6 md:p-10 bg-white dark:bg-slate-850 text-gray-800 dark:text-slate-100 space-y-6 relative overflow-hidden transition-colors" id="sheetContent">
+                    <!-- Watermark -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] dark:opacity-[0.015] pointer-events-none select-none">
+                        <i class="fa-solid fa-calculator text-[150px]"></i>
+                    </div>
+
+                    <!-- Header of Exam -->
+                    <div class="text-center space-y-2 relative animate-fade-in">
+                        <h4 class="font-bold text-lg">ព្រះរាជាណាចក្រកម្ពុជា</h4>
+                        <h5 class="text-sm font-semibold">ជាតិ សាសនា ព្រះមហាក្សត្រ</h5>
+                        <div class="w-12 h-0.5 bg-gray-400 dark:bg-slate-600 mx-auto my-1"></div>
+                        <h4 class="font-bold mt-4">ក្រសួងអប់រំ យុវជន និងកីឡា</h4>
+                        <p class="text-sm font-semibold text-indigo-600 dark:text-cyan-400" id="sheetHeaderTitle">វិញ្ញាសាប្រឡងបាក់ឌុប</p>
+                    </div>
+
+                    <div class="border-t-2 border-b-2 border-gray-300 dark:border-slate-700 py-3 flex justify-between text-xs text-gray-655 dark:text-slate-355">
+                        <div>សម័យប្រឡង៖ <span id="sheetExamDate" class="font-bold">សីហា ឆ្នាំ ២០២៥</span></div>
+                        <div>វិញ្ញាសា៖ <span id="sheetSubjectName" class="font-bold">គណិតវិទ្យា</span></div>
+                        <div>រយៈពេល៖ <span class="font-bold" id="sheetDuration">១៥០ នាទី</span></div>
+                    </div>
+
+                    <!-- Mock Content Generator -->
+                    <div id="sheetBody" class="space-y-4 text-sm leading-relaxed tex2jax_process">
+                        <!-- Dynamic content here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 dark:bg-slate-900 px-6 py-4 border-t border-gray-150 dark:border-slate-700 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between transition-colors">
+                <span class="text-xs text-gray-500 dark:text-slate-400">រក្សាសិទ្ធិគ្រប់យ៉ាងដោយ © បណ្ណាល័យបាក់ឌុបគណិតវិទ្យា</span>
+                <div class="flex gap-2">
+                    <button onclick="downloadSample()" class="px-5 py-2.5 bg-gray-200 dark:bg-slate-750 hover:bg-gray-300 dark:hover:bg-slate-700 text-gray-800 dark:text-slate-150 font-semibold rounded-2xl text-sm transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-download"></i> ទាញយក PDF
+                    </button>
+                    <button onclick="closeModal()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white font-semibold rounded-2xl text-sm transition-colors flex items-center gap-2 shadow-sm">
+                        យល់ព្រម
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-6 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 transition-all transform translate-y-20 opacity-0 z-50">
+        <i class="fa-solid fa-circle-check text-green-400 text-lg"></i>
+        <span id="toastMessage">សារដំណឹង</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-10 mt-12 border-t-4 border-gray-850 dark:border-slate-950">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-6">
+            
+            <!-- Highlighted Creator Contact Button on Footer (ជាមួយខ្សែភ្លើងរត់ព័ទ្ធជុំវិញ) -->
+            <div class="flex justify-center">
+                <div class="glowing-light-border rounded-2xl overflow-hidden shadow-xl transition-transform duration-200 hover:scale-105 active:scale-95">
+                    <a href="https://laychannhan.blogspot.com/" target="_blank" class="bg-slate-900 hover:bg-slate-850 text-white px-8 py-3.5 rounded-xl text-base font-bold flex items-center gap-3">
+                        <i class="fa-solid fa-envelope-open-text text-xl text-amber-400"></i>
+                        <span>ទំនាក់ទំនងទៅកាន់អ្នកបង្កើតកម្មវិធី</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- រូបតំណាងបណ្តាញសង្គមជាមួយតំណភ្ជាប់ផ្ទាល់ខ្លួនថ្មី (Updated social links with user's URLs) -->
+            <div class="flex justify-center gap-6 text-2xl mb-2">
+                <a href="https://www.facebook.com/laychannhan" target="_blank" class="hover:text-blue-500 transition-colors" title="Facebook Page"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://t.me/laychannhan" target="_blank" class="hover:text-blue-400 transition-colors" title="Telegram Channel"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://www.youtube.com/@cammathtips" target="_blank" class="hover:text-red-500 transition-colors" title="YouTube Channel"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+            <p class="text-sm font-medium text-slate-300">គេហទំព័រនេះបង្កើតឡើងដើម្បីជាជំនួយស្មារតីដល់ប្អូនៗសិស្សានុសិស្សថ្នាក់ទី១២ ក្នុងការត្រៀមខ្លួនប្រឡងបាក់ឌុប</p>
+            <p class="text-xs opacity-70">រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០០២ - ២០២៦ បណ្ណាល័យបាក់ឌុបគណិតវិទ្យា</p>
+        </div>
     </footer>
 
     <script>
-        // Initialize KaTeX auto-render
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: "$$", right: "$$", display: true},
-                    {left: "$", right: "$", display: false}
-                ]
+        // បង្កើតបញ្ជីឆ្នាំ និងលក្ខខណ្ឌពិសេសសម្រាប់ឆ្នាំ ២០១៤ (មានការប្រឡង២ដង)
+        const yearsData = [];
+        for (let year = 2025; year >= 2002; year--) {
+            if (year === 2014) {
+                // បន្ថែមប៊ូតុងឆ្នាំ ២០១៤ លើកទី ១ និងលើកទី ២
+                yearsData.push({ id: '2014_1', value: 2014, suffix: ' (១)', label: '២០១៤ (១)' });
+                yearsData.push({ id: '2014_2', value: 2014, suffix: ' (២)', label: '២០១៤ (២)' });
+            } else {
+                yearsData.push({ id: year.toString(), value: year, suffix: '', label: convertToKhmerNumber(year) });
+            }
+        }
+
+        // Color palettes សម្រាប់ប៊ូតុងឆ្នាំនីមួយៗ (ស្ទីលគែមចម្រុះពណ៌ក្រាស់ៗបែប 3D ទាក់ទាញខ្លាំង)
+        const buttonColors = [
+            { bg: 'bg-[#ff4757]', text: 'text-white', border: 'border-[#ff1e30] border-b-red-800 border-r-red-800', icon: 'fa-square-root-variable' }, // ក្រហម
+            { bg: 'bg-[#2ed573]', text: 'text-white', border: 'border-[#1ebc56] border-b-green-800 border-r-green-800', icon: 'fa-calculator' },   // បៃតង
+            { bg: 'bg-[#ffa502]', text: 'text-white', border: 'border-[#e69100] border-b-orange-800 border-r-orange-800', icon: 'fa-compass' },  // ទឹកក្រូច
+            { bg: 'bg-[#1e90ff]', text: 'text-white', border: 'border-[#0070e0] border-b-blue-800 border-r-blue-800', icon: 'fa-chart-pie' },    // ខៀវ
+            { bg: 'bg-[#9b5de5]', text: 'text-white', border: 'border-[#7d3fc2] border-b-purple-800 border-r-purple-800', icon: 'fa-infinity' }, // ស្វាយ
+            { bg: 'bg-[#00f5d4]', text: 'text-gray-900', border: 'border-[#00d0b4] border-b-teal-800 border-r-teal-800', icon: 'fa-wave-square' }, // ត្រីសមុទ្រ
+            { bg: 'bg-[#ff006e]', text: 'text-white', border: 'border-[#d90059] border-b-pink-800 border-r-pink-800', icon: 'fa-graduation-cap' }, // ផ្កាឈូកក្រម៉ៅ
+            { bg: 'bg-[#3a86c8]', text: 'text-white', border: 'border-[#266ea8] border-b-indigo-900 border-r-indigo-900', icon: 'fa-pencil' },  // ទឹកប៊ិចក្រម៉ៅ
+            { bg: 'bg-[#ffcc00]', text: 'text-gray-900', border: 'border-[#cca300] border-b-yellow-800 border-r-yellow-800', icon: 'fa-bezier-curve' } // លឿង
+        ];
+
+        let selectedYear = null;
+        let selectedSubjectName = '';
+        let selectedDocType = '';
+
+        // ប្តូរ Mode ភ្លឺ/ងងឹត (Theme Toggle Switch Mode)
+        // ផ្ដល់ភាពងាយស្រួលដល់ការមើលនៅពេលយប់ ឬថ្ងៃ
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (htmlElement.classList.contains('light')) {
+                htmlElement.classList.remove('light');
+                htmlElement.classList.add('dark');
+                themeIcon.className = "fa-solid fa-sun text-xl text-yellow-300";
+                showToast("ប្តូរទៅកាន់ Dark Mode ជោគជ័យ!");
+            } else {
+                htmlElement.classList.remove('dark');
+                htmlElement.classList.add('light');
+                themeIcon.className = "fa-solid fa-moon text-xl text-indigo-200";
+                showToast("ប្តូរទៅកាន់ Light Mode ជោគជ័យ!");
+            }
+        }
+
+        // Render Year Buttons
+        function renderButtons(filterValue = '') {
+            const container = document.getElementById('buttonsContainer');
+            container.innerHTML = '';
+            
+            let count = 0;
+            yearsData.forEach((yearObj, index) => {
+                const yearKhmer = yearObj.label;
+                
+                // If search query is applied
+                if (filterValue && !yearObj.value.toString().includes(filterValue) && !yearKhmer.includes(filterValue)) {
+                    return;
+                }
+
+                // Choose color scheme from palette
+                const color = buttonColors[index % buttonColors.length];
+
+                // Create button wrapper with 3D Pop Style classes
+                const btn = document.createElement('button');
+                btn.className = `btn-3d ${color.bg} ${color.text} border-2 ${color.border} rounded-2xl p-6 flex flex-col items-center justify-center gap-3 transform active:translate-y-1 transition-all duration-100 shadow-md`;
+                btn.onclick = () => selectYear(yearObj, color.bg, color.border);
+
+                btn.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl shadow-inner border border-white/30">
+                        <i class="fa-solid ${color.icon}"></i>
+                    </div>
+                    <div class="text-center">
+                        <span class="block text-[10px] uppercase opacity-90 font-bold tracking-wider">ឆ្នាំសិក្សា</span>
+                        <span class="block text-xl font-bold tracking-tight">${yearKhmer}</span>
+                    </div>
+                `;
+
+                container.appendChild(btn);
+                count++;
             });
-        });
+
+            document.getElementById('resultsCount').innerText = `បង្ហាញសរុប ${convertToKhmerNumber(count)} ឆ្នាំ`;
+            document.getElementById('totalYearsBadge').innerText = convertToKhmerNumber(yearsData.length);
+        }
+
+        // Convert Western Numbers to Khmer Numbers
+        function convertToKhmerNumber(num) {
+            const khmerDigits = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
+            return num.toString().split('').map(digit => {
+                return !isNaN(parseInt(digit)) ? khmerDigits[parseInt(digit)] : digit;
+            }).join('');
+        }
+
+        // Search/Filter logic
+        function filterYears() {
+            const val = document.getElementById('yearSearchInput').value;
+            renderButtons(val);
+        }
+
+        // Select a year and show subject section
+        function selectYear(yearObj, bgClass, borderClass) {
+            selectedYear = yearObj;
+            
+            // Hide dashboard grid, show subject section
+            document.getElementById('yearsGridSection').classList.add('hidden');
+            const subSec = document.getElementById('subjectSection');
+            subSec.classList.remove('hidden');
+
+            // Set Selected Year Badge
+            const badge = document.getElementById('selectedYearBadge');
+            badge.innerText = `ឆ្នាំ ${yearObj.label}`;
+            badge.className = `text-lg font-bold px-5 py-2.5 rounded-2xl text-white shadow-md ${bgClass} border-2 ${borderClass}`;
+            
+            // Scroll to view
+            subSec.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Go back to year grid
+        function showYearsGrid() {
+            document.getElementById('subjectSection').classList.add('hidden');
+            document.getElementById('yearsGridSection').classList.remove('hidden');
+            selectedYear = null;
+        }
+
+        // Modal Utilities
+        function openModal(subject, type) {
+            selectedSubjectName = subject;
+            selectedDocType = type;
+
+            const modal = document.getElementById('docModal');
+            const title = document.getElementById('modalTitle');
+            const subtitle = document.getElementById('modalSubtitle');
+            const headerColor = document.getElementById('modalHeaderColor');
+            
+            // Set dynamic header colors depending on subject (Science: Red, Social Science: Teal)
+            let colorGradient = 'from-red-600 to-rose-500';
+            if (subject.includes('សង្គម')) {
+                colorGradient = 'from-teal-600 to-emerald-500';
+            }
+
+            headerColor.className = `p-6 text-white flex items-center justify-between bg-gradient-to-r ${colorGradient}`;
+
+            title.innerText = `${type}៖ ${subject} ឆ្នាំ ${selectedYear.label}`;
+            subtitle.innerText = `បាក់ឌុប កម្រិតថ្នាក់ជាតិ (${type}ផ្លូវការ)`;
+
+            // Sheet dynamic contents
+            document.getElementById('sheetHeaderTitle').innerText = `${type}ប្រឡងបាក់ឌុប - មុខវិជ្ជា៖ ${subject}`;
+            
+            // កំណត់សម័យប្រឡងទៅតាមលើកទី១ ឬទី២ ប្រសិនបើជាឆ្នាំ២០១៤
+            if (selectedYear.id === '2014_1') {
+                document.getElementById('sheetExamDate').innerText = `សីហា ឆ្នាំ ២០១៤ (លើកទី ១)`;
+            } else if (selectedYear.id === '2014_2') {
+                document.getElementById('sheetExamDate').innerText = `តុលា ឆ្នាំ ២០១៤ (លើកទី ២)`;
+            } else {
+                document.getElementById('sheetExamDate').innerText = `សីហា ឆ្នាំ ${convertToKhmerNumber(selectedYear.value)}`;
+            }
+            
+            document.getElementById('sheetSubjectName').innerText = subject;
+            document.getElementById('sheetDuration').innerText = subject.includes('សង្គម') ? "១២០ នាទី" : "១៥០ នាទី";
+
+            // Generate content body
+            generateMockContent(subject, type);
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Lock scrolling
+
+            // បន្ទាប់ពីការបញ្ចូលមាតិការួចរាល់ យើងត្រូវបញ្ជាឱ្យ MathJax បំប្លែងរូបមន្តភ្លាមៗ
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([document.getElementById('sheetBody')]).then(() => {
+                    console.log("MathJax Typeset Completed with Latin Modern Fonts");
+                }).catch((err) => {
+                    console.error("MathJax Typeset Error: ", err);
+                });
+            }
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('docModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Unlock scrolling
+        }
+
+        // ទីតាំងគ្រប់គ្រងទិន្នន័យ (វិញ្ញាសា និង ដំណោះស្រាយ) បំបែកតាមឆ្នាំ ចាប់ពី ២០០២ ដល់ ២០២៥
+        function generateMockContent(subject, type) {
+            const body = document.getElementById('sheetBody');
+            body.innerHTML = '';
+
+            let contentHTML = '';
+            const yearId = selectedYear.id; // e.g. '2025', '2014_1', '2014_2', ...
+
+            // === ករណីពិសេស៖ ឆ្នាំ ២០២០ (សម័យ COVID-19 មិនមានការប្រឡង) ===
+            if (yearId === '2020') {
+                contentHTML = `
+                    <div class="p-8 text-center space-y-4">
+                        <div class="w-20 h-20 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border border-amber-200">
+                            <i class="fa-solid fa-virus-slash"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-amber-600 dark:text-amber-400">សម័យប្រឡងត្រូវបានលុបចោល (សម័យ Covid)</h3>
+                        <p class="text-slate-600 dark:text-slate-400 max-w-lg mx-auto text-sm leading-relaxed font-semibold">
+                            ដោយសារការរីករាលដាលនៃជំងឺកូវីដ-១៩ (Covid-19) ក្រសួងអប់រំ យុវជន និងកីឡា បានសម្រេចអនុញ្ញាតឱ្យបេក្ខជនចុះឈ្មោះប្រឡងសញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិទាំងអស់ ជាប់ដោយស្វ័យប្រវត្តិ។ ដូចនេះមិនមានប្រធានវិញ្ញាសា និងដំណោះស្រាយសម្រាប់ឆ្នាំ ២០២០ ឡើយ។
+                        </p>
+                    </div>
+                `;
+                body.innerHTML = contentHTML;
+                return;
+            }
+
+            // បែងចែកតាមកម្រិតថ្នាក់ (វិទ្យាសាស្ត្រ ឬ សង្គម)
+            if (subject === 'គណិតវិទ្យា (ថ្នាក់វិទ្យាសាស្ត្រ)') {
+                
+                if (type === 'វិញ្ញាសា') {
+                    // បំបែកការ Paste ប្រធានវិញ្ញាសាថ្នាក់វិទ្យាសាស្ត្រតាមឆ្នាំនីមួយៗ
+                    switch(yearId) {
+                        case '2025':
+                            /* === ឆ្នាំ ២០២៥៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 text-sm md:text-base">
+                                    <h4 class="font-bold text-lg text-indigo-600 dark:text-cyan-400">វិញ្ញាសាគណិតវិទ្យា ថ្នាក់វិទ្យាសាស្ត្រ ឆ្នាំ ២០២៥</h4>
+                                    <p class="pl-4">លំហាត់ទី ១ (ចំនួនកុំផ្លិច)៖ គណនា $(1+i\\sqrt{3})^{2025}$</p>
+                                    <p class="text-slate-500 italic text-xs">[លោកអ្នកអាចលុបកូដគំរូនេះ និង Paste ប្រធានវិញ្ញាសាឆ្នាំ ២០២៥ ពិតប្រាកដនៅទីនេះ]</p>
+                                </div>`;
+                            break;
+                        case '2024':
+                            /* === ឆ្នាំ ២០២៤៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០២៤ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2023':
+                            /* === ឆ្នាំ ២០២៣៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 text-sm md:text-base">
+                                    <div class="font-bold text-gray-750 dark:text-slate-300">លំហាត់ទី ១ (ប្រូបាប៊ីលីតេ - ១០ ពិន្ទុ)</div>
+                                    <p class="pl-4">ក្នុងថង់មួយមានបាល់ពណ៌ក្រហម $5$ និងបាល់ពណ៌ខៀវ $3$។ គេចាប់យកបាល់ $3$ ព្រមគ្នាដោយចៃដន្យ។</p>
+                                    <p class="pl-8">ក. គណនាប្រូបាប៊ីលីតេនៃការទទួលបានបាល់ពណ៌ក្រហមទាំង $3$។</p>
+                                    <p class="pl-8">ខ. គណនាប្រូបាប៊ីលីតេនៃការទទួលបានបាល់ពណ៌ក្រហមយ៉ាងតិច $1$។</p>
+
+                                    <div class="font-bold text-gray-700 dark:text-slate-300 mt-6">លំហាត់ទី ២ (ចំនួនកុំផ្លិច - ១០ ពិន្ទុ)</div>
+                                    <p class="pl-4">គេមានចំនួនកុំផ្លិច $z = 1 + i\\sqrt{3}$។</p>
+                                    <p class="pl-8">ក. សរសេរ $z$ ជាទម្រង់ត្រីកោណមាត្រ។</p>
+                                    <p class="pl-8">ខ. គណនា $z^{2026}$។</p>
+
+                                    <div class="font-bold text-gray-700 dark:text-slate-300 mt-6">លំហាត់ទី ៣ (សមីការឌីផេរ៉ង់ស្យែល - ១០ ពិន្ទុ)</div>
+                                    <p class="pl-4">ក. ដោះស្រាយសមីការឌីផេរ៉ង់ស្យែល $(E): y'' - 3y' + 2y = 0$។</p>
+                                    <p class="pl-4">ខ. រកចម្លើយជាក់លាក់មួយនៃ $(E)$ បើគេដឹងថា $y(0) = 1$ និង $y'(0) = 3$។</p>
+
+                                    <div class="font-bold text-gray-700 dark:text-slate-300 mt-6">លំហាត់ទី ៤ (អនុគមន៍ - ២០ ពិន្ទុ)</div>
+                                    <p class="pl-4">គេមានអនុគមន៍ $f(x) = \\displaystyle\\frac{2x - 1}{x - 1}$ កំណត់ចំពោះគ្រប់ $x \\neq 1$។</p>
+                                    <p class="pl-8">ក. សិក្សាលីមីតត្រង់ចុងដែនកំណត់ និងរកសមីការអាស៊ីមតូតទាំងអស់។</p>
+                                    <p class="pl-8">ខ. សិក្សាអថេរភាព និងសង់តារាងអថេរភាពនៃអនុគមន៍ $f$។</p>
+                                </div>`;
+                            break;
+                        case '2022':
+                            /* === ឆ្នាំ ២០២២៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០២២ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2021':
+                            /* === ឆ្នាំ ២០២១៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០២១ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2019':
+                            /* === ឆ្នាំ ២០១៩៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៩ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2018':
+                            /* === ឆ្នាំ ២០១៨៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៨ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2017':
+                            /* === ឆ្នាំ ២០១៧៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៧ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2016':
+                            /* === ឆ្នាំ ២០១៦៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៦ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2015':
+                            /* === ឆ្នាំ ២០១៥៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៥ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_1':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ១៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៤ (លើកទី ១) (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_2':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ២៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៤ (លើកទី ២) (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2013':
+                            /* === ឆ្នាំ ២០១៣៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៣ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2012':
+                            /* === ឆ្នាំ ២០១២៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១២ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2011':
+                            /* === ឆ្នាំ ២០១១៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១១ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2010':
+                            /* === ឆ្នាំ ២០១០៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១០ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2009':
+                            /* === ឆ្នាំ ២០០៩៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៩ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2008':
+                            /* === ឆ្នាំ ២០០៨៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៨ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2007':
+                            /* === ឆ្នាំ ២០០៧៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៧ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2006':
+                            /* === ឆ្នាំ ២០០៦៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៦ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2005':
+                            /* === ឆ្នាំ ២០០៥៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៥ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2004':
+                            /* === ឆ្នាំ ២០០៤៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៤ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2003':
+                            /* === ឆ្នាំ ២០០៣៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៣ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2002':
+                            /* === ឆ្នាំ ២០០២៖ វិទ្យាសាស្ត្រ (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០២ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        default:
+                            contentHTML = `<p>មិនមានទិន្នន័យឡើយ</p>`;
+                    }
+                } 
+                else if (type === 'ដំណោះស្រាយ') {
+                    // បកស្រាយដំណោះស្រាយថ្នាក់វិទ្យាសាស្ត្រតាមឆ្នាំនីមួយៗ
+                    switch(yearId) {
+                        case '2025':
+                            /* === ឆ្នាំ ២០២៥៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 text-sm md:text-base">
+                                    <h4 class="font-bold text-lg text-emerald-600">ដំណោះស្រាយគណិតវិទ្យា ថ្នាក់វិទ្យាសាស្ត្រ ឆ្នាំ ២០២៥</h4>
+                                    <p class="pl-4">ការគណនា៖ $(1+i\\sqrt{3})^{2025} = [2(\\cos \\frac{\\pi}{3} + i\\sin \\frac{\\pi}{3})]^{2025} = 2^{2025}(\\cos 675\\pi + i\\sin 675\\pi) = -2^{2025}$</p>
+                                    <p class="text-slate-500 italic text-xs">[លោកអ្នកអាចលុបកូដគំរូនេះ និង Paste ដំណោះស្រាយឆ្នាំ ២០២៥ ពិតប្រាកដនៅទីនេះ]</p>
+                                </div>`;
+                            break;
+                        case '2024':
+                            /* === ឆ្នាំ ២០២៤៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០២៤ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2023':
+                            /* === ឆ្នាំ ២០២៣៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 animate-fade-in text-sm md:text-base">
+                                    <div class="font-bold text-gray-750 dark:text-slate-300">ដំណោះស្រាយលំហាត់ទី ១ (ប្រូបាប៊ីលីតេ)</div>
+                                    <div class="pl-4 space-y-3">
+                                        <p class="font-semibold text-indigo-600 dark:text-cyan-400">ក. គណនាប្រូបាបនៃការទទួលបានបាល់ពណ៌ក្រហមទាំង $3$៖</p>
+                                        <p class="pl-2">ចំនួនករណីអាច៖ $C(8, 3) = \\displaystyle\\frac{8!}{5! \\times 3!} = 56$</p>
+                                        <p class="pl-2">ចំនួនករណីស្រប៖ $C(5, 3) = 10$</p>
+                                        <p class="pl-2 font-bold text-red-650 dark:text-red-400">នាំឱ្យ $P(R) = \\displaystyle\\frac{10}{56} = \\displaystyle\\frac{5}{28}$</p>
+                                    </div>
+
+                                    <div class="font-bold text-gray-700 dark:text-slate-300 mt-6">ដំណោះស្រាយលំហាត់ទី ២ (ចំនួនកុំផ្លិច)</div>
+                                    <div class="pl-4 space-y-3">
+                                        <p class="font-semibold text-indigo-600 dark:text-cyan-400">ក. ស្វែងរកទម្រង់ត្រីកោណមាត្រ៖</p>
+                                        <p class="pl-2">ម៉ូឌុល៖ $|z| = \\sqrt{1^2 + (\\sqrt{3})^2} = 2$</p>
+                                        <p class="pl-2">អុកឡង់៖ $\\cos \\theta = \\displaystyle\\frac{1}{2}$ , $\\sin \\theta = \\displaystyle\\frac{\\sqrt{3}}{2} \\Rightarrow \\theta = \\displaystyle\\frac{\\pi}{3}$</p>
+                                        <p class="pl-2 font-bold text-red-650 dark:text-red-400">ទម្រង់ត្រីកោណមាត្រ៖ $z = 2 \\left( \\cos \\displaystyle\\frac{\\pi}{3} + i \\sin \\displaystyle\\frac{\\pi}{3} \\right)$</p>
+                                    </div>
+                                </div>`;
+                            break;
+                        case '2022':
+                            /* === ឆ្នាំ ២០២២៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០២២ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2021':
+                            /* === ឆ្នាំ ២០២១៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០២១ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2019':
+                            /* === ឆ្នាំ ២០១៩៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៩ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2018':
+                            /* === ឆ្នាំ ២០១៨៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៨ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2017':
+                            /* === ឆ្នាំ ២០១៧៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៧ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2016':
+                            /* === ឆ្នាំ ២០១៦៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៦ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2015':
+                            /* === ឆ្នាំ ២០១៥៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៥ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_1':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ១៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៤ (លើកទី ១) (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_2':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ២៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៤ (លើកទី ២) (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2013':
+                            /* === ឆ្នាំ ២០១៣៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៣ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2012':
+                            /* === ឆ្នាំ ២០១២៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១២ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2011':
+                            /* === ឆ្នាំ ២០១១៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១១ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2010':
+                            /* === ឆ្នាំ ២០១០៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១០ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2009':
+                            /* === ឆ្នាំ ២០០៩៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៩ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2008':
+                            /* === ឆ្នាំ ២០០៨៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៨ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2007':
+                            /* === ឆ្នាំ ២០០៧៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៧ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2006':
+                            /* === ឆ្នាំ ២០០៦៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៦ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2005':
+                            /* === ឆ្នាំ ២០០៥៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៥ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2004':
+                            /* === ឆ្នាំ ២០០៤៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៤ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2003':
+                            /* === ឆ្នាំ ២០០៣៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៣ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2002':
+                            /* === ឆ្នាំ ២០០២៖ វិទ្យាសាស្ត្រ (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០២ (វិទ្យាសាស្ត្រ) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        default:
+                            contentHTML = `<p>មិនមានទិន្នន័យឡើយ</p>`;
+                    }
+                }
+
+            } 
+            // បែងចែកជា ថ្នាក់វិទ្យាសាស្ត្រសង្គម
+            else if (subject === 'គណិតវិទ្យា (ថ្នាក់សង្គម)') {
+
+                if (type === 'វិញ្ញាសា') {
+                    // បកស្រាយប្រធានវិញ្ញាសាថ្នាក់សង្គមតាមឆ្នាំនីមួយៗ
+                    switch(yearId) {
+                        case '2025':
+                            /* === ឆ្នាំ ២០២៥៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 text-sm md:text-base">
+                                    <h4 class="font-bold text-lg text-teal-600">វិញ្ញាសាគណិតវិទ្យា ថ្នាក់សង្គម ឆ្នាំ ២០២៥</h4>
+                                    <p class="pl-4">លំហាត់ទី ១ (ស្វ៊ីតចំនួន)៖ គណនាតួទី ២៥ នៃស្វ៊ីតនព្វន្ត</p>
+                                    <p class="text-slate-500 italic text-xs">[លោកអ្នកអាចលុបកូដគំរូនេះ និង Paste ប្រធានវិញ្ញាសាថ្នាក់សង្គមឆ្នាំ ២០២៥ ពិតប្រាកដនៅទីនេះ]</p>
+                                </div>`;
+                            break;
+                        case '2024':
+                            /* === ឆ្នាំ ២០២៤៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០២៤ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2023':
+                            /* === ឆ្នាំ ២០២៣៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 text-sm md:text-base">
+                                    <div class="font-bold text-gray-750 dark:text-slate-300">លំហាត់ទី ១ (ស្វ៊ីតចំនួន - ១៥ ពិន្ទុ)</div>
+                                    <p class="pl-4">គេមានស្វ៊ីតនព្វន្ត $(u_n)$ ដែលមានតួទី១ $u_1 = 3$ និងផលសងរួម $d = 2$។</p>
+                                    <p class="pl-8">ក. គណនាតួ $u_{10}$ នៃស្វ៊ីតនេះ។</p>
+                                    <p class="pl-8">ខ. គណនាផលបូក ១០ តួដំបូង $S_{10} = u_1 + u_2 + ... + u_{10}$។</p>
+
+                                    <div class="font-bold text-gray-700 dark:text-slate-300 mt-6">លំហាត់ទី ២ (ស្ថិតិ - ១៥ ពិន្ទុ)</div>
+                                    <p class="pl-4">តារាងខាងក្រោមបង្ហាញពីពិន្ទុរបស់សិស្ស ១០ នាក់៖</p>
+                                    <div class="bg-slate-100 dark:bg-slate-900 p-4 rounded-xl font-mono text-center my-2 text-sm">
+                                        ពិន្ទុ៖ ៥, ៦, ៦, ៧, ៨, ៨, ៨, ៩, ៩, ១០
+                                    </div>
+                                    <p class="pl-8">ក. រកមធ្យមភាគ (Mean) នៃពិន្ទុសិស្សទាំងនេះ។</p>
+                                    <p class="pl-8">ខ. រកម៉ូដ (Mode) និងមេដ្យាន (Median) នៃទិន្នន័យខាងលើ។</p>
+                                </div>`;
+                            break;
+                        case '2022':
+                            /* === ឆ្នាំ ២០២២៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០២២ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2021':
+                            /* === ឆ្នាំ ២០២១៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០២១ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2019':
+                            /* === ឆ្នាំ ២០១៩៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៩ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2018':
+                            /* === ឆ្នាំ ២០១៨៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៨ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2017':
+                            /* === ឆ្នាំ ២០១៧៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៧ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2016':
+                            /* === ឆ្នាំ ២០១៦៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៦ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2015':
+                            /* === ឆ្នាំ ២០១៥៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៥ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_1':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ១៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៤ (លើកទី ១) (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_2':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ២៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៤ (លើកទី ២) (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2013':
+                            /* === ឆ្នាំ ២០១៣៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១៣ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2012':
+                            /* === ឆ្នាំ ២០១២៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១២ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2011':
+                            /* === ឆ្នាំ ២០១១៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១១ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2010':
+                            /* === ឆ្នាំ ២០១០៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០១០ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2009':
+                            /* === ឆ្នាំ ២០០៩៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៩ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2008':
+                            /* === ឆ្នាំ ២០០៨៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៨ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2007':
+                            /* === ឆ្នាំ ២០០៧៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៧ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2006':
+                            /* === ឆ្នាំ ២០០៦៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៦ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2005':
+                            /* === ឆ្នាំ ២០០៥៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៥ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2004':
+                            /* === ឆ្នាំ ២០០៤៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៤ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2003':
+                            /* === ឆ្នាំ ២០០៣៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០៣ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2002':
+                            /* === ឆ្នាំ ២០០២៖ ថ្នាក់សង្គម (វិញ្ញាសា) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">វិញ្ញាសា ឆ្នាំ ២០០២ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        default:
+                            contentHTML = `<p>មិនមានទិន្នន័យឡើយ</p>`;
+                    }
+                } 
+                else if (type === 'ដំណោះស្រាយ') {
+                    // បកស្រាយដំណោះស្រាយថ្នាក់សង្គមតាមឆ្នាំនីមួយៗ
+                    switch(yearId) {
+                        case '2025':
+                            /* === ឆ្នាំ ២០២៥៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 text-sm md:text-base">
+                                    <h4 class="font-bold text-lg text-emerald-600">ដំណោះស្រាយគណិតវិទ្យា ថ្នាក់សង្គម ឆ្នាំ ២០២៥</h4>
+                                    <p class="pl-4">ការដោះស្រាយ៖ ប្រើប្រាស់រូបមន្តស្វ៊ីតនព្វន្ត $u_n = u_1 + (n-1)d$ ដើម្បីទាញរកចម្លើយ</p>
+                                    <p class="text-slate-500 italic text-xs">[លោកអ្នកអាចលុបកូដគំរូនេះ និង Paste ដំណោះស្រាយថ្នាក់សង្គមឆ្នាំ ២០២៥ ពិតប្រាកដនៅទីនេះ]</p>
+                                </div>`;
+                            break;
+                        case '2024':
+                            /* === ឆ្នាំ ២០២៤៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០២៤ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2023':
+                            /* === ឆ្នាំ ២០២៣៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `
+                                <div class="space-y-4 text-sm md:text-base">
+                                    <div class="font-bold text-gray-750 dark:text-slate-300">ដំណោះស្រាយលំហាត់ទី ១ (ស្វ៊ីតចំនួន)</div>
+                                    <div class="pl-4 space-y-2">
+                                        <p class="font-semibold text-teal-650">ក. គណនាតួ $u_{10}$៖</p>
+                                        <p class="text-sm">រូបមន្ត៖ $u_n = u_1 + (n - 1)d$</p>
+                                        <p class="text-sm">នាំឱ្យ៖ $u_{10} = 3 + (10 - 1) \\times 2 = 21$</p>
+                                    </div>
+
+                                    <div class="font-bold text-gray-750 dark:text-slate-300 mt-6">ដំណោះស្រាយលំហាត់ទី ២ (ស្ថិតិ)</div>
+                                    <div class="pl-4 space-y-3">
+                                        <p class="font-semibold text-teal-650">ក. រកមធ្យមភាគ (Mean) ៖</p>
+                                        <p class="text-sm">$\\bar{X} = \\displaystyle\\frac{5 + 6 + 6 + 7 + 8 + 8 + 8 + 9 + 9 + 10}{10} = 7.6$</p>
+                                    </div>
+                                </div>`;
+                            break;
+                        case '2022':
+                            /* === ឆ្នាំ ២០២២៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០២២ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2021':
+                            /* === ឆ្នាំ ២០២១៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០២១ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2019':
+                            /* === ឆ្នាំ ២០១៩៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៩ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2018':
+                            /* === ឆ្នាំ ២០១៨៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៨ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2017':
+                            /* === ឆ្នាំ ២០១៧៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៧ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2016':
+                            /* === ឆ្នាំ ២០១៦៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៦ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2015':
+                            /* === ឆ្នាំ ២០១៥៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៥ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_1':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ១៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៤ (លើកទី ១) (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2014_2':
+                            /* === ឆ្នាំ ២០១៤ លើកទី ២៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៤ (លើកទី ២) (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2013':
+                            /* === ឆ្នាំ ២០១៣៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១៣ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2012':
+                            /* === ឆ្នាំ ២០១២៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១២ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2011':
+                            /* === ឆ្នាំ ២០១១៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១១ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2010':
+                            /* === ឆ្នាំ ២០១០៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០១០ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2009':
+                            /* === ឆ្នាំ ២០០៩៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៩ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2008':
+                            /* === ឆ្នាំ ២០០៨៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៨ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2007':
+                            /* === ឆ្នាំ ២០០៧៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៧ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2006':
+                            /* === ឆ្នាំ ២០០៦៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៦ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2005':
+                            /* === ឆ្នាំ ២០០៥៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៥ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2004':
+                            /* === ឆ្នាំ ២០០៤៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៤ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2003':
+                            /* === ឆ្នាំ ២០០៣៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០៣ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        case '2002':
+                            /* === ឆ្នាំ ២០០២៖ ថ្នាក់សង្គម (ដំណោះស្រាយ) - Paste ត្រង់នេះ === */
+                            contentHTML = `<div class="space-y-4"><p class="font-bold">ដំណោះស្រាយ ឆ្នាំ ២០០២ (ថ្នាក់សង្គម) [Paste ត្រង់នេះ]</p></div>`;
+                            break;
+                        default:
+                            contentHTML = `<p>មិនមានទិន្នន័យឡើយ</p>`;
+                    }
+                }
+            }
+
+            body.innerHTML = contentHTML;
+        }
+
+        // Show Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            
+            toastMsg.innerText = message;
+            toast.classList.remove('opacity-0', 'translate-y-20');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-20');
+            }, 3000);
+        }
+
+        // មុខងារទាញយក PDF ពិតប្រាកដដោយប្រើបណ្ណាល័យ html2pdf.js
+        function downloadSample() {
+            showToast("កំពុងបង្កើតឯកសារ PDF... សូមរង់ចាំ!");
+            
+            // កំណត់គោលដៅ Element ដែលត្រូវទាញយក (សន្លឹកកិច្ចការ)
+            const element = document.getElementById('sheetContent');
+            
+            // រៀបចំឈ្មោះឯកសារ
+            const cleanSubjectName = selectedSubjectName.replace(/[\(\)\s]/g, '_');
+            const fileName = `BakDuk_Math_${selectedYear.id}_${selectedDocType}_${cleanSubjectName}.pdf`;
+            
+            // ការកំណត់ទ្រង់ទ្រាយសម្រាប់ html2pdf
+            const opt = {
+                margin:       [10, 10, 10, 10], // top, left, bottom, right margins
+                filename:     fileName,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true,
+                    letterRendering: true
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // ដំណើរការបង្កើត និងទាញយក PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                showToast("ទាញយកឯកសារ PDF ជោគជ័យ!");
+            }).catch(err => {
+                console.error("PDF Generation error: ", err);
+                showToast("ការទាញយកមានបញ្ហា! សូមព្យាយាមម្តងទៀត។");
+            });
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            renderButtons();
+        }
     </script>
 </body>
 </html>
